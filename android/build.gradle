@@ -4,7 +4,8 @@ buildscript {
         minSdkVersion = 24
         compileSdkVersion = 36
         targetSdkVersion = 36
-        ndkVersion = "27.1.12297006"
+        // 移除 NDK 版本指定，让 Android Gradle Plugin 自动管理
+        // ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
     }
     repositories {

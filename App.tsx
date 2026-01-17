@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, Text, useColorScheme, View,TextInput,TouchableOpacity, Alert,ScrollView } from 'react-native';
 import {
@@ -35,6 +35,32 @@ function AppContent() {
 function Login(){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(email && !isValidEmail(email)){
+        setEmailError('Invalid email address');
+      }else{
+        setEmailError('');
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [email]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(password && password.trim().length < 6){
+        setPasswordError('Password must be at least 6 characters');
+      }else{
+        setPasswordError('');
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [password]);
+
   const handleLogin = () =>{
     if (!email || !password) {
       Alert.alert('提示', '请输入邮箱和密码');
@@ -44,13 +70,20 @@ function Login(){
     // 登录逻辑
     Alert.alert('成功', '登录成功！');
   }
+
+  const isValidEmail = (email: string) =>{
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
       <View style={styles.card}>
         <Text style={styles.title}>Login</Text>
           <TextInput style={styles.input} placeholder='Email' value={email} onChangeText={setEmail} keyboardType='email-address' />
+          <Text style={styles.error}>{emailError}</Text>
           <TextInput style={styles.input} placeholder='Password' value={password} onChangeText={setPassword} secureTextEntry={true}/>
+          <Text style={styles.error}>{passwordError}</Text>
           <TouchableOpacity style={styles.forgotPasswordContainer}>
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
@@ -82,6 +115,7 @@ const styles = StyleSheet.create({
     padding: 30,
     margin: 20,
     width: '90%',
+    maxWidth: 200, 
     alignItems: 'center', 
   },
   title: {
@@ -98,7 +132,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',     // 边框颜色
     borderRadius: 10,        // 圆角
     paddingHorizontal: 15,   // 左右内边距
-    marginBottom: 15,        // 输入框之间的间距
+    // marginBottom: 15,        // 输入框之间的间距
     fontSize: 16,            // 字体大小
     backgroundColor: '#fff', // 背景色
   },
@@ -126,6 +160,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
+  },
+  error:{
+    color: 'red',
   }
 });
 
