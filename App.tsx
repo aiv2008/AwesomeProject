@@ -7,7 +7,7 @@
 
 import React, { useState ,useEffect} from 'react';
 import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, Text, useColorScheme, View,TextInput,TouchableOpacity, Alert,ScrollView } from 'react-native';
+import { StatusBar, StyleSheet, Text, useColorScheme, View,TextInput,TouchableOpacity, Alert,ScrollView,ActivityIndicator } from 'react-native';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -37,7 +37,9 @@ function Login(){
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginIsAssessbled, setLoginIsAssessbled] = useState(true);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       if(email && !isValidEmail(email)){
@@ -62,13 +64,34 @@ function Login(){
   }, [password]);
 
   const handleLogin = () =>{
+    setIsLoading(true);
+    setLoginIsAssessbled(false);
+    if(emailError || passwordError)  {
+      setLoginIsAssessbled(true);
+      setIsLoading(false);
+      return;
+    }
     if (!email || !password) {
-      Alert.alert('提示', '请输入邮箱和密码');
+      Alert.alert('提示', '请输入邮箱和密码', [
+        {
+          text: 'OK', onPress: () => {
+            setLoginIsAssessbled(true);
+            setIsLoading(false); 
+            console.log('请输入邮箱和密码');
+          }},
+      ]);
       return;
     }
     
     // 登录逻辑
-    Alert.alert('成功', '登录成功！');
+    Alert.alert('成功', '登录成功！', [
+        {
+          text: 'OK', onPress: () => {
+            setLoginIsAssessbled(true);
+            setIsLoading(false); 
+            console.log('登录成功');
+          }},
+      ]);
   }
 
   const isValidEmail = (email: string) =>{
@@ -78,6 +101,7 @@ function Login(){
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+      
       <View style={styles.card}>
         <Text style={styles.title}>Login</Text>
           <TextInput style={styles.input} placeholder='Email' value={email} onChangeText={setEmail} keyboardType='email-address' />
@@ -87,8 +111,11 @@ function Login(){
           <TouchableOpacity style={styles.forgotPasswordContainer}>
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity disabled={!loginIsAssessbled} style={styles.button} onPress={handleLogin}>
+            <View style={styles.buttonContent}>
+              {isLoading && <ActivityIndicator size="small" color="#fff" style={{marginRight: 10}} />}
+              <Text style={styles.buttonText}>Login</Text>
+            </View>
           </TouchableOpacity>
       </View>
       </ScrollView>
@@ -149,6 +176,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonContent:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   forgotPasswordContainer:{
     width: '90%',
