@@ -97,6 +97,11 @@ You've successfully run and modified your React Native App. :partying_face:
 - ✅ State 管理（useState Hook）
 - ✅ 样式系统（StyleSheet）
 - ✅ 基础表单处理
+- ✅ **useEffect Hook** - 延迟验证、清理函数
+- ✅ **表单验证** - 邮箱格式验证、密码长度验证
+- ✅ **错误提示** - 在输入框下方显示错误信息
+- ✅ **Loading 状态** - ActivityIndicator 和按钮禁用
+- ✅ **样式布局** - Flexbox 横向布局（flexDirection: 'row'）
 
 ---
 
@@ -113,7 +118,7 @@ You've successfully run and modified your React Native App. :partying_face:
 
 **实践任务：**
 
-- [ ] 在你的登录界面添加 `useEffect` 监听表单变化
+- [x] 在你的登录界面添加 `useEffect` 监听表单变化 ✅
 - [ ] 使用 `useCallback` 优化 `handleLogin` 函数
 - [ ] 学习使用 `useMemo` 缓存计算结果
 
@@ -128,10 +133,12 @@ You've successfully run and modified your React Native App. :partying_face:
 
 **实践任务：**
 
-- [ ] 添加邮箱格式验证（使用正则表达式：`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`）
-- [ ] 添加密码长度验证（至少 6 个字符）
-- [ ] 在输入框下方显示错误提示（而不是 Alert）
-- [ ] 添加登录按钮的 loading 状态（使用 `ActivityIndicator`）
+- [x] 添加邮箱格式验证（使用正则表达式：`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`）✅
+- [x] 添加密码长度验证（至少 6 个字符）✅
+- [x] 在输入框下方显示错误提示（而不是 Alert）✅
+- [x] 添加登录按钮的 loading 状态（使用 `ActivityIndicator`）✅
+- [ ] 优化错误提示样式（字体大小、间距）
+- [ ] 优化输入框间距
 
 #### 3. 样式进阶
 
